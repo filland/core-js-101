@@ -428,19 +428,20 @@ describe('03-arrays-tasks', () => {
 
   it.optional('getPositivesCount should return the number of positive integers in the specified array', () => {
     [
+      // {
+      //   arr: [],
+      //   expected: 0,
+      // }, {
+      //   arr: [-1, 0, 1],
+      //   expected: 1,
+      // }, {
+      //   arr: [1, 2, 3],
+      //   expected: 3,
+      // }, {
+      //   arr: [null, 1, 'elephant'],
+      //   expected: 1,
+      // }, 
       {
-        arr: [],
-        expected: 0,
-      }, {
-        arr: [-1, 0, 1],
-        expected: 1,
-      }, {
-        arr: [1, 2, 3],
-        expected: 3,
-      }, {
-        arr: [null, 1, 'elephant'],
-        expected: 1,
-      }, {
         arr: [1, '2'],
         expected: 1,
       },
