@@ -112,7 +112,7 @@ function removeLeadingAndTrailingWhitespaces(value) {
  */
 function repeatString(value, count) {
   let buffer = '';
-  for (let i = 0; i < count; i++) {
+  for (let i = 0; i < count; i += 1) {
     buffer += value;
   }
   return buffer;
@@ -211,8 +211,8 @@ function extractEmails(str) {
  */
 function getRectangleString(width, height) {
   let rectangle = '';
-  for (let h = 0; h < height; h++) {
-    for (let w = 0; w < width; w++) {
+  for (let h = 0; h < height; h += 1) {
+    for (let w = 0; w < width; w += 1) {
       // top border
       if (h === 0) {
         if (w === 0) {
