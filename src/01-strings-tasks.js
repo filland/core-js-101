@@ -35,7 +35,7 @@ function concatenateStrings(value1, value2) {
  *   ''      => 0
  */
 function getStringLength(value) {
-  return value.length
+  return value.length;
 }
 
 /**
@@ -51,8 +51,8 @@ function getStringLength(value) {
  *   'John','Doe'      => 'Hello, John Doe!'
  *   'Chuck','Norris'  => 'Hello, Chuck Norris!'
  */
-function getStringFromTemplate( firstName, lastName ) {
-  return `Hello, ${firstName} ${lastName}!`
+function getStringFromTemplate(firstName, lastName) {
+  return `Hello, ${firstName} ${lastName}!`;
 }
 
 /**
@@ -66,7 +66,7 @@ function getStringFromTemplate( firstName, lastName ) {
  *   'Hello, Chuck Norris!' => 'Chuck Norris'
  */
 function extractNameFromTemplate(value) {
-  return value.split("Hello,")[1].slice(0,-1).trim();
+  return value.split('Hello,')[1].slice(0, -1).trim();
 }
 
 
@@ -113,7 +113,7 @@ function removeLeadingAndTrailingWhitespaces(value) {
 function repeatString(value, count) {
   let buffer = '';
   for (let i = 0; i < count; i++) {
-    buffer+=value;
+    buffer += value;
   }
   return buffer;
 }
@@ -133,7 +133,7 @@ function repeatString(value, count) {
 function removeFirstOccurrences(str, value) {
   const startIndex = str.indexOf(value);
   const startPart = str.substr(0, startIndex);
-  const endPart = str.substr(startIndex + value.length, str.length-1);
+  const endPart = str.substr(startIndex + value.length, str.length - 1);
   return startPart + endPart;
 }
 
@@ -149,7 +149,7 @@ function removeFirstOccurrences(str, value) {
  *   '<a>' => 'a'
  */
 function unbracketTag(str) {
-  return str.slice(1,-1);
+  return str.slice(1, -1);
 }
 
 
@@ -183,7 +183,7 @@ function convertToUpperCase(str) {
  *   'info@gmail.com' => ['info@gmail.com']
  */
 function extractEmails(str) {
-  return str.split(";");
+  return str.split(';');
 }
 
 /**
@@ -213,41 +213,34 @@ function getRectangleString(width, height) {
   let rectangle = '';
   for (let h = 0; h < height; h++) {
     for (let w = 0; w < width; w++) {
-      
       // top border
-      if(h === 0) {
-        
-        if(w === 0) {
-          rectangle+="┌";
+      if (h === 0) {
+        if (w === 0) {
+          rectangle += '┌';
         } else if (w === width - 1) {
-          rectangle+="┐";
+          rectangle += '┐';
         } else {
-          rectangle += "─"
+          rectangle += '─';
         }
 
         // bottom border
       } else if (h === height - 1) {
-        
-        if(w === 0) {
-          rectangle+="└";
+        if (w === 0) {
+          rectangle += '└';
         } else if (w === width - 1) {
-          rectangle+="┘";
+          rectangle += '┘';
         } else {
-          rectangle += "─"
+          rectangle += '─';
         }
-
+      } else if (w === 0) {
+        rectangle += '│';
+      } else if (w === width - 1) {
+        rectangle += '│';
       } else {
-
-        if(w === 0) {
-          rectangle+="│";
-        } else if (w === width - 1) {
-          rectangle+="│";
-        } else {
-          rectangle += " "
-        }
-      } 
+        rectangle += ' ';
+      }
     }
-    rectangle+= "\n";
+    rectangle += '\n';
   }
 
   return rectangle;
@@ -273,12 +266,12 @@ function getRectangleString(width, height) {
 function encodeToRot13(str) {
   const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
   const encodedAlphabet = 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm';
-  return str.split('').map(letter => {
+  return str.split('').map((letter) => {
     // if not a letter then do not do encoding
-    if(new RegExp('[^a-zA-Z0-9]').test(letter)) return letter;
+    if (new RegExp('[^a-zA-Z0-9]').test(letter)) return letter;
     const index = alphabet.indexOf(letter);
     return encodedAlphabet.charAt(index);
-  }).join("");
+  }).join('');
 }
 
 /**
@@ -295,7 +288,7 @@ function encodeToRot13(str) {
  *   isString(new String('test')) => true
  */
 function isString(value) {
-  return typeof value === "string" || value instanceof String;
+  return typeof value === 'string' || value instanceof String;
 }
 
 
@@ -325,18 +318,18 @@ function isString(value) {
  */
 function getCardId(card) {
   const types = {
-    "♣": 1,
-    "♦": 2,
-    "♥": 3,
-    "♠": 4
+    '♣': 1,
+    '♦': 2,
+    '♥': 3,
+    '♠': 4,
   };
-  const values = ['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
-  const type = card.charAt(card.length-1);
+  const values = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+  const type = card.charAt(card.length - 1);
   const value = card.split(type)[0];
 
   const valueIndex = values.indexOf(value);
   const typeIndex = types[type];
-  
+
   return typeIndex === 1 ? valueIndex : (typeIndex - 1) * values.length + valueIndex;
 }
 
