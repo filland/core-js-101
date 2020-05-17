@@ -4,7 +4,7 @@
   "description": "Core JS 101",
   "scripts": {
     "test": "npm run lint && mocha",
-    "t": "node node_modules/mocha/bin/mocha test/05-regex-tests.js",
+    "t": "node node_modules/mocha/bin/mocha test/06-objects-tests",
     "lint": "node node_modules/eslint/bin/eslint.js ./src"
   },
   "author": "aorgish, mikhama",
