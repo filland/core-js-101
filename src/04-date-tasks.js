@@ -6,7 +6,6 @@
  *                                                                                           *
  ******************************************************************************************* */
 
-
 /**
  * Parses a rfc2822 string date representation into date value
  * For rfc2822 date specification refer to : http://tools.ietf.org/html/rfc2822#page-14
@@ -34,10 +33,9 @@ function parseDataFromRfc2822(value) {
  *    '2016-01-19T16:07:37+00:00'    => Date()
  *    '2016-01-19T08:07:37Z' => Date()
  */
-function parseDataFromIso8601(/* value */) {
-  throw new Error('Not implemented');
+function parseDataFromIso8601(value) {
+  return Date.parse(value);
 }
-
 
 /**
  * Returns true if specified date is leap year and false otherwise
@@ -53,10 +51,19 @@ function parseDataFromIso8601(/* value */) {
  *    Date(2012,1,1)    => true
  *    Date(2015,1,1)    => false
  */
-function isLeapYear(/* date */) {
-  throw new Error('Not implemented');
-}
+function isLeapYear(date) {
+  const d = new Date(date);
+  const year = d.getFullYear();
 
+  if (year % 4 !== 0) {
+    return false;
+  } if (year % 100 !== 0) {
+    return true;
+  } if (year % 400 !== 0) {
+    return false;
+  }
+  return true;
+}
 
 /**
  * Returns the string represention of the timespan between two dates.
@@ -73,10 +80,36 @@ function isLeapYear(/* date */) {
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,10,0,0,250)     => "00:00:00.250"
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,15,20,10,453)   => "05:20:10.453"
  */
-function timeSpanToString(/* startDate, endDate */) {
-  throw new Error('Not implemented');
-}
+function timeSpanToString(startDate, endDate) {
+  const diffInMilliseconds = endDate - startDate;
 
+  const date = new Date('2000-01-01T03:00:00.000');
+  const hBefore = date.getHours();
+  const mBefore = date.getMinutes();
+  const sBefore = date.getSeconds();
+  date.setMilliseconds(diffInMilliseconds);
+
+  const hAfter = date.getHours();
+  const mAfter = date.getMinutes();
+  const sAfter = date.getSeconds();
+  const msAfter = date.getMilliseconds();
+
+  const hoursDiff = hAfter - hBefore;
+  const hours = hoursDiff > 9 ? hoursDiff : `0${hoursDiff}`;
+
+  const minutesDiff = mAfter - mBefore;
+  const minutes = minutesDiff > 9 ? minutesDiff : `0${minutesDiff}`;
+
+  const secondsDiff = sAfter - sBefore;
+  const seconds = secondsDiff > 9 ? secondsDiff : `0${secondsDiff}`;
+
+  const tempVal = msAfter > 99 ? msAfter : `0${msAfter}`;
+
+  const milliseconds = msAfter > 9 ? tempVal : `00${msAfter}`;
+
+  const result = `${hours}:${minutes}:${seconds}.${milliseconds}`;
+  return result;
+}
 
 /**
  * Returns the angle (in radians) between the hands of an analog clock
@@ -94,10 +127,28 @@ function timeSpanToString(/* startDate, endDate */) {
  *    Date.UTC(2016,3,5,18, 0) => Math.PI
  *    Date.UTC(2016,3,5,21, 0) => Math.PI/2
  */
-function angleBetweenClockHands(/* date */) {
-  throw new Error('Not implemented');
-}
+function angleBetweenClockHands(date) {
+  const hourHandStepInDegrees = 360 / 12;
+  const minutesHandStepInDegrees = 360 / 60;
 
+  const minutes = date.getUTCMinutes();
+  const hours = (date.getUTCHours() % 12) + minutes / 60;
+
+  const minutesDegree = minutes * minutesHandStepInDegrees;
+  const hoursDegree = hours * hourHandStepInDegrees;
+
+  let degrees = 0;
+
+  if (hoursDegree > minutesDegree) {
+    degrees = hoursDegree - minutesDegree;
+  } else {
+    degrees = minutesDegree - hoursDegree;
+  }
+
+  return degrees > 180
+    ? (360 - degrees) * (Math.PI / 180)
+    : degrees * (Math.PI / 180);
+}
 
 module.exports = {
   parseDataFromRfc2822,
