@@ -106,8 +106,8 @@ function removeFalsyValues(arr) {
     if (val === false
       || val === null
       || val === 0
-      || val == undefined
-      || isNaN(val) && (`${val}`) === 'NaN'
+      || val === undefined
+      || (Number.isNaN(val) && (`${val}`) === 'NaN')
       || val === '') {
       return false;
     }
@@ -250,7 +250,7 @@ function toArrayOfSquares(arr) {
  */
 function getMovingSum(arr) {
   const copyArr = [].concat(arr);
-  arr.map((value, index, arr) => {
+  arr.map((value, index) => {
     if (index === 0) {
       copyArr.splice(index, 1, value);
       return value;
@@ -275,7 +275,7 @@ function getMovingSum(arr) {
  * [ "a" ] => []
  */
 function getSecondItems(arr) {
-  return arr.filter((v, i, arr) => i % 2 !== 0);
+  return arr.filter((v, i) => i % 2 !== 0);
 }
 
 
@@ -295,10 +295,12 @@ function getSecondItems(arr) {
  */
 function propagateItemsByPositionIndex(arr) {
   const result = [];
-  arr.map((item, index, arr) => {
-    Array.from({ length: index + 1 }, (v, i) => {
+  arr.map((item, index) => {
+    Array.from({ length: index + 1 }, (v) => {
       result.push(item);
+      return v;
     });
+    return item;
   });
   return result;
 }
@@ -318,11 +320,10 @@ function propagateItemsByPositionIndex(arr) {
  *   [ 10, 10, 10, 10 ] => [ 10, 10, 10 ]
  */
 function get3TopItems(arr) {
-  return arr.sort((num1, num2) => num1 > num2).reverse().filter((item, index, arr) => {
-    if (index <= 2) {
-      return item;
-    }
-  });
+  return arr
+    .sort((num1, num2) => num1 > num2)
+    .reverse()
+    .filter((item, index) => index <= 2);
 }
 
 
@@ -340,7 +341,7 @@ function get3TopItems(arr) {
  *   [ 1, '2' ] => 1
  */
 function getPositivesCount(arr) {
-  return arr.filter((item, index, arr) => item > 0 && !isNaN(item) && typeof item === 'number').length;
+  return arr.filter((item) => item > 0 && !Number.isNaN(item) && typeof item === 'number').length;
 }
 
 /**
@@ -510,8 +511,10 @@ function getIdentityMatrix(n) {
       } else {
         row.push(0);
       }
+      return false;
     });
     result.push(row);
+    return false;
   });
   return result;
 }
@@ -546,7 +549,7 @@ function getIntervalArray(start, stop) {
  *   [ 1, 1, 2, 2, 3, 3, 4, 4] => [ 1, 2, 3, 4]
  */
 function distinct(arr) {
-  return arr.filter((value, index, arr) => (arr.indexOf(value) === index));
+  return arr.filter((value, index, arr2) => (arr2.indexOf(value) === index));
 }
 
 /**
@@ -582,13 +585,9 @@ function distinct(arr) {
 function group(array, keySelector, valueSelector) {
   const groups = new Map();
 
-  const key = Object.keys(array[0])[0];
-  const value = Object.keys(array[0])[1];
-
-  array.filter((json, index, arr) => {
-    const country = json[key];
-    const city = json[value];
-
+  array.filter((json) => {
+    const country = keySelector(json);
+    const city = valueSelector(json);
     if (groups[country]) {
       groups[country].push(city);
     } else {
@@ -606,6 +605,7 @@ function group(array, keySelector, valueSelector) {
     const arr = [];
     arr.push(item, groups[item]);
     resultArray.push(arr);
+    return false;
   });
 
   return new Map(resultArray);
@@ -646,11 +646,12 @@ function selectMany(arr, childrenSelector) {
 function getElementByIndexes(arr, indexes) {
   let result = null;
   let tempArr = null;
-  indexes.filter((item) => {
+  indexes.map((item) => {
     tempArr = tempArr === null ? arr[item] : tempArr[item];
-    if (typeof tempArr !== 'array') {
+    if (typeof tempArr !== 'object') {
       result = tempArr;
     }
+    return item;
   });
   return result;
 }
@@ -679,8 +680,11 @@ function swapHeadAndTail(arr) {
     return arr;
   }
   const firstHalf = arr.slice(0, Math.floor(arr.length / 2));
-  const secondHalf = arr.slice(arr.length % 2 === 0 ? arr.length / 2 : Math.floor(arr.length / 2) + 1, arr.length);
-  const result = arr.length % 2 === 0 ? secondHalf.concat(firstHalf) : secondHalf.concat([arr[Math.floor(arr.length / 2)]]).concat(firstHalf);
+  const stIndex = arr.length % 2 === 0 ? arr.length / 2 : Math.floor(arr.length / 2) + 1;
+  const secondHalf = arr.slice(stIndex, arr.length);
+  const evenLengthResult = secondHalf.concat(firstHalf);
+  const oddLengthResult = secondHalf.concat([arr[Math.floor(arr.length / 2)]]).concat(firstHalf);
+  const result = arr.length % 2 === 0 ? evenLengthResult : oddLengthResult;
   return result;
 }
 
